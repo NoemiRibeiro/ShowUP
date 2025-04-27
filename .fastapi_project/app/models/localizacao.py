@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class Localizacao(BaseModel):
     id: int
     nome: str

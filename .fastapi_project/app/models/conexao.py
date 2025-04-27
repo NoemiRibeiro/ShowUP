@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class Conexao(BaseModel):
     id: int
     emissorConvite: int
