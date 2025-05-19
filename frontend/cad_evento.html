@@ -72,7 +72,22 @@
   		textarea::placeholder {
 			color: darkslategray;
   			opacity: 0.9;
+
 		}
+		#descricao {
+    		resize: none;
+  		}
+  		#idLocalizacao {
+    		width: 100%;
+    		resize: none;
+    		background-color: #f9f9f9;
+    		border: 1px solid #ccc;
+    		color: #333;
+    		padding: 8px;
+    		font-family: inherit;
+    		font-size: 14px;
+    		line-height: 1.4;
+  		}
   		.button {
   			border: 2px solid #65659E;
   			border-radius: 4px;
@@ -88,25 +103,32 @@
 		}
 	</style>
 
-	<script>
+<script>
   window.addEventListener('DOMContentLoaded', () => {
+    // --- Contador de caracteres ---
+    const descricao = document.getElementById('descricao');
+    const contador = document.getElementById('contador');
+    if (descricao && contador) {
+      descricao.addEventListener('input', () => {
+        contador.textContent = `${descricao.value.length}/500`;
+      });
+    }
+
+    // --- Controle de datas e checkbox ---
     const checkbox = document.getElementById('diaUnico');
     const labelDataInicio = document.getElementById('labelDataInicio');
     const dataInicio = document.getElementById('dataInicio');
     const dataFim = document.getElementById('dataFim');
 
-    // Obter a data de hoje no formato 'YYYY-MM-DD'
     const hoje = new Date();
     const ano = hoje.getFullYear();
     const mes = String(hoje.getMonth() + 1).padStart(2, '0');
     const dia = String(hoje.getDate()).padStart(2, '0');
     const dataAtual = `${ano}-${mes}-${dia}`;
 
-    // Definir a data mínima para os campos
-    dataInicio.min = dataAtual;
-    dataFim.min = dataAtual;
+    if (dataInicio) dataInicio.min = dataAtual;
+    if (dataFim) dataFim.min = dataAtual;
 
-    // Atualiza label e campos de data com base no checkbox
     function atualizarLabelEDatas() {
       if (checkbox.checked) {
         labelDataInicio.innerHTML = 'Data do evento <strong>*</strong>';
@@ -118,18 +140,50 @@
       }
     }
 
-    // Atualiza dataFim automaticamente se dataInicio mudar e checkbox estiver marcado
-    dataInicio.addEventListener('input', () => {
-      if (checkbox.checked) {
-        dataFim.value = dataInicio.value;
-      }
-    });
+    if (dataInicio) {
+      dataInicio.addEventListener('input', () => {
+        if (checkbox.checked) {
+          dataFim.value = dataInicio.value;
+        }
+      });
+    }
 
-    // Atualiza ao marcar/desmarcar o checkbox
-    checkbox.addEventListener('change', atualizarLabelEDatas);
+    if (checkbox) {
+      checkbox.addEventListener('change', atualizarLabelEDatas);
+    }
 
-    // Chamada inicial ao carregar a página
     atualizarLabelEDatas();
+
+    // --- API ViaCEP ---
+    const campoCep = document.getElementById('cep');
+    const campoEndereco = document.getElementById('idLocalizacao');
+
+    if (campoCep && campoEndereco) {
+      campoCep.addEventListener('blur', function () {
+        const cep = this.value.replace(/\D/g, '');
+
+        if (cep.length === 8) {
+          fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(response => response.json())
+            .then(data => {
+              if (!data.erro) {
+                const endereco = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+                campoEndereco.value = endereco;
+              } else {
+                alert('CEP não encontrado.');
+                campoEndereco.value = '';
+              }
+            })
+            .catch(() => {
+              alert('Erro ao buscar o endereço.');
+              campoEndereco.value = '';
+            });
+        } else {
+          alert('CEP inválido. Digite 8 números.');
+          campoEndereco.value = '';
+        }
+      });
+    }
   });
 </script>
 
@@ -149,27 +203,45 @@
 	<label id="labelDataInicio" for="dataInicio">Data do evento <strong>*</strong></label>
 		<input type="date" id="dataInicio" required>
 	<label for="diaUnico">Evento com data única? </label>
-	<input type="checkbox" id="diaUnico">
+		<input type="checkbox" id="diaUnico">
 		<br><br>
 
-	
+	<label for="horaInicio">Horário de Início <strong>*</strong></label>
+		<input type="time" id="horaInicio" required>
+		<br><br>
+
 	<label for="dataFim">Data do encerramento <strong>*</strong></label>
 		<input type="date" id="dataFim">
 		<br><br>
-	
-	<label>Sobre o evento</label><br>
-  		<textarea id="descricao" placeholder="Descreva os  detalhes do evento..." rows="5"></textarea>
+
+	<label for="horaFim">Horário de encerramento <strong>*</strong></label>
+		<input type="time" id="horaFim" required>
 		<br><br>
 
-	<label for="genero">Gênero <strong>*</strong></label><br>
-		<input list="gen" id="genero" placeholder="Selecione o gênero" required>
-  		<datalist id="gen">
-    		<option value="Masculino">
-    		<option value="Feminino">
-    		<option value="Não-binário">
-    		<option value="Prefiro não informar">
-  		</datalist>
-  		<br><br>
+	
+	<label>Sobre o evento</label><br>
+  		<textarea id="descricao" placeholder="Descreva os  detalhes do evento em até 500 caracteres..." maxlength="500" rows="5"></textarea>
+  		<br><span id="contador"  style="display: block; text-align: right;"><strong>0/500</strong></span>
+
+
+	<label for="cep">CEP <strong>*</strong></label>
+		<input type="text" id="cep" placeholder="Digite o CEP" maxlength="9">
+
+	<label for="numero">Número <strong>*</strong></label>
+		<input type="text" name="numero" placeholder="Digite o número ou 's/n'">
+
+	<label for="complemento">Complemento</label>
+		<input type="text" name="complemento" placeholder="Digite o complemento">
+		<br><br>
+
+	<label for="idLocalizacao">Endereço do evento (preenchido automaticamente) <strong>*</strong></label><br>
+		<textarea id="idLocalizacao" placeholder="Endereço será preenchido automaticamente" rows="2" readonly></textarea>
+		<br><br>
+	
+
+	
+
+	
 
   	<center><input type="submit" name="botao" value="Cadastrar Evento" class="button"></center>
 </form>
