@@ -105,7 +105,7 @@
 
 <script>
   window.addEventListener('DOMContentLoaded', () => {
-    // --- Contador de caracteres ---
+    // Contador de caracteres
     const descricao = document.getElementById('descricao');
     const contador = document.getElementById('contador');
     if (descricao && contador) {
@@ -114,7 +114,7 @@
       });
     }
 
-    // --- Controle de datas e checkbox ---
+    // Controle de datas e checkbox
     const checkbox = document.getElementById('diaUnico');
     const labelDataInicio = document.getElementById('labelDataInicio');
     const dataInicio = document.getElementById('dataInicio');
@@ -154,35 +154,57 @@
 
     atualizarLabelEDatas();
 
-    // --- API ViaCEP ---
+    // API ViaCEP e atualização do endereço
     const campoCep = document.getElementById('cep');
     const campoEndereco = document.getElementById('idLocalizacao');
+    const campoNumero = document.querySelector('input[name="numero"]');
+    const campoComplemento = document.querySelector('input[name="complemento"]');
+
+    let dadosEndereco = null; // vai guardar o resultado da API
+
+    function atualizarEndereco() {
+      if (!dadosEndereco) return; // se não buscou ainda, nada a fazer
+      const numero = campoNumero?.value?.trim() || '';
+      const complemento = campoComplemento?.value?.trim() || '';
+      const complementoTexto = complemento ? `, ${complemento}` : '';
+      campoEndereco.value = `${dadosEndereco.logradouro}, ${numero}${complementoTexto}, ${dadosEndereco.bairro}, ${dadosEndereco.localidade} - ${dadosEndereco.uf}`;
+    }
 
     if (campoCep && campoEndereco) {
-      campoCep.addEventListener('blur', function () {
-        const cep = this.value.replace(/\D/g, '');
-
+      campoCep.addEventListener('blur', () => {
+        const cep = campoCep.value.replace(/\D/g, '');
         if (cep.length === 8) {
           fetch(`https://viacep.com.br/ws/${cep}/json/`)
             .then(response => response.json())
             .then(data => {
               if (!data.erro) {
-                const endereco = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
-                campoEndereco.value = endereco;
+                dadosEndereco = data;
+                atualizarEndereco();
               } else {
                 alert('CEP não encontrado.');
                 campoEndereco.value = '';
+                dadosEndereco = null;
               }
             })
             .catch(() => {
               alert('Erro ao buscar o endereço.');
               campoEndereco.value = '';
+              dadosEndereco = null;
             });
         } else {
           alert('CEP inválido. Digite 8 números.');
           campoEndereco.value = '';
+          dadosEndereco = null;
         }
       });
+    }
+
+    // Atualiza endereço ao alterar número ou complemento
+    if (campoNumero) {
+      campoNumero.addEventListener('input', atualizarEndereco);
+    }
+    if (campoComplemento) {
+      campoComplemento.addEventListener('input', atualizarEndereco);
     }
   });
 </script>
