@@ -4,3 +4,14 @@
 
 ## TO DO
 - [ ] XXX
+
+- [ ] Falta:
+
+No cadastro de evento:
+- criar restrição de horário para não menor do que o atual + 2H quando a data do evento for igual à data atual;
+- criar restrição de horário para que o término não seja menor do que o início caso seja dia único
+
+No cadastro de usuário:
+- restringir o campo BIO da mesma forma do campo descricao no cadastro de evento
+
+Criar as outras telas de cadastro
