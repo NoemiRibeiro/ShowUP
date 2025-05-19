@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cadastro de Evento</title>
+	<style type="text/css">
+		body {
+			font-family: Tahoma, Verdana, sans-serif;
+			background-color: #2A2A4C;
+			color: white;
+			text-align: justify;
+		}
+		b {
+			color: #F6FAE3;
+		}
+		h1 {
+			color: #FD1C8E;
+			text-shadow: 2px 2px 5px #494170;
+		}
+		h2 {
+			color: #33D6FF;
+			text-shadow: 2px 2px 5px #494170;
+		}
+		h3 {
+			color: #316EFD;
+			text-shadow: 2px 2px 5px #494170;
+		}
+		h4 {
+			color:#66629A;
+			text-shadow: 2px 2px 5px #494170;
+		}
+		i {
+			color: #FD1C8E;
+		}
+		input {
+			padding: 12px 20px;
+ 			margin: 8px 0;
+ 			box-sizing: border-box;
+  			border-radius: 4px;
+  			border-color: #33D6FF;
+  		}
+  		input:focus {
+  			border-color: #FD1C8E;
+		}
+		input::placeholder {
+			color: darkslategray;
+  			opacity: 0.9;
+		}
+		input[type=submit]:hover {
+  			background-color: #D1C8E
+  			;
+  		}
+		label {
+ 			position: relative;
+  			pointer-events: none;
+  			font-size: 15px;
+  			color: white;
+  			text-align: left;
+		}
+		strong {
+			color: #FD1C8E;
+		}
+		textarea {
+  			width: 100%;
+  			padding: 12px 20px;
+  			margin: 8px 0;
+  			box-sizing: border-box;
+  			border-radius: 4px;
+  			border-color: #33D6FF;
+  		}
+  		textarea::placeholder {
+			color: darkslategray;
+  			opacity: 0.9;
+		}
+  		.button {
+  			border: 2px solid #65659E;
+  			border-radius: 4px;
+  			background-color: #65659E;
+  			color: white;
+ 			padding: 16px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+		}
+	</style>
+
+	<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const checkbox = document.getElementById('diaUnico');
+    const labelDataInicio = document.getElementById('labelDataInicio');
+    const dataInicio = document.getElementById('dataInicio');
+    const dataFim = document.getElementById('dataFim');
+
+    // Obter a data de hoje no formato 'YYYY-MM-DD'
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const dataAtual = `${ano}-${mes}-${dia}`;
+
+    // Definir a data mínima para os campos
+    dataInicio.min = dataAtual;
+    dataFim.min = dataAtual;
+
+    // Atualiza label e campos de data com base no checkbox
+    function atualizarLabelEDatas() {
+      if (checkbox.checked) {
+        labelDataInicio.innerHTML = 'Data do evento <strong>*</strong>';
+        dataFim.value = dataInicio.value;
+        dataFim.disabled = true;
+      } else {
+        labelDataInicio.innerHTML = 'Data de Início <strong>*</strong>';
+        dataFim.disabled = false;
+      }
+    }
+
+    // Atualiza dataFim automaticamente se dataInicio mudar e checkbox estiver marcado
+    dataInicio.addEventListener('input', () => {
+      if (checkbox.checked) {
+        dataFim.value = dataInicio.value;
+      }
+    });
+
+    // Atualiza ao marcar/desmarcar o checkbox
+    checkbox.addEventListener('change', atualizarLabelEDatas);
+
+    // Chamada inicial ao carregar a página
+    atualizarLabelEDatas();
+  });
+</script>
+
+</head>
+<body>
+
+<h2>Cadastro de Evento</h2>
+
+<p>Preencha os campos abaixo para cadastrar um evento.</p>
+<p>Os campos marcados com <strong>*</strong> são obrigatórios.</p>
+
+<form action="">
+	<label for="nome">Nome <strong>*</strong></label>
+		<input type="text" id="nome" placeholder="Nome do Evento"required>
+		<br><br>
+	
+	<label id="labelDataInicio" for="dataInicio">Data do evento <strong>*</strong></label>
+		<input type="date" id="dataInicio" required>
+	<label for="diaUnico">Evento com data única? </label>
+	<input type="checkbox" id="diaUnico">
+		<br><br>
+
+	
+	<label for="dataFim">Data do encerramento <strong>*</strong></label>
+		<input type="date" id="dataFim">
+		<br><br>
+	
+	<label>Sobre o evento</label><br>
+  		<textarea id="descricao" placeholder="Descreva os  detalhes do evento..." rows="5"></textarea>
+		<br><br>
+
+	<label for="genero">Gênero <strong>*</strong></label><br>
+		<input list="gen" id="genero" placeholder="Selecione o gênero" required>
+  		<datalist id="gen">
+    		<option value="Masculino">
+    		<option value="Feminino">
+    		<option value="Não-binário">
+    		<option value="Prefiro não informar">
+  		</datalist>
+  		<br><br>
+
+  	<center><input type="submit" name="botao" value="Cadastrar Evento" class="button"></center>
+</form>
+
+
+
+</body>
+</html>
