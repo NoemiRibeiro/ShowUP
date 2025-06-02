@@ -101,6 +101,16 @@
 	</style>
 
 	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+    // Contador de caracteres
+    const descricao = document.getElementById('bio');
+    const contador = document.getElementById('contador');
+    if (descricao && contador) {
+      descricao.addEventListener('input', () => {
+        contador.textContent = `${descricao.value.length}/500`;
+      });
+    }
+
   window.addEventListener('DOMContentLoaded', () => {
     // ----- 1. Validação de Data de Nascimento -----
     const dataInput = document.getElementById('dataNascimento');
@@ -230,7 +240,8 @@
 
   	<label>Bio</label><br>
   		<textarea id="bio" placeholder="Fale um pouco sobre você..." rows="5"></textarea>
-		<br><br>
+  		<br><br><strong><span id="contador"  style="display: block; text-align: right;">0/500</span></strong>
+  		<br>
 
   	<center><input type="submit" name="botao" value="Cadastrar Usuário" class="button"></center>
 </form>

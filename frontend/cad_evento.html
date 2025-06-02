@@ -5,95 +5,100 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Cadastro de Evento</title>
 	<style type="text/css">
+
+		b {
+			color: #F6FAE3;
+		}
+
 		body {
 			font-family: Tahoma, Verdana, sans-serif;
 			background-color: #2A2A4C;
 			color: white;
 			text-align: justify;
 		}
-		b {
-			color: #F6FAE3;
-		}
+
+		form {
+    	max-width: 700px;
+  	  margin: 0 auto;
+  	  font-family: sans-serif;
+ 		}
+
 		h1 {
 			color: #FD1C8E;
 			text-shadow: 2px 2px 5px #494170;
 		}
+
 		h2 {
 			color: #33D6FF;
 			text-shadow: 2px 2px 5px #494170;
 		}
+
 		h3 {
 			color: #316EFD;
 			text-shadow: 2px 2px 5px #494170;
 		}
+
 		h4 {
 			color:#66629A;
 			text-shadow: 2px 2px 5px #494170;
 		}
+
 		i {
 			color: #FD1C8E;
 		}
+
 		input {
 			padding: 12px 20px;
  			margin: 8px 0;
  			box-sizing: border-box;
-  			border-radius: 4px;
-  			border-color: #33D6FF;
+  		border-radius: 4px;
+  		border-color: #33D6FF;
   		}
-  		input:focus {
-  			border-color: #FD1C8E;
+
+  	input:focus {
+  		border-color: #FD1C8E;
 		}
+
 		input::placeholder {
 			color: darkslategray;
-  			opacity: 0.9;
+  		opacity: 0.9;
 		}
-		input[type=submit]:hover {
-  			background-color: #D1C8E
-  			;
-  		}
+
 		label {
  			position: relative;
-  			pointer-events: none;
-  			font-size: 15px;
-  			color: white;
-  			text-align: left;
+ 			pointer-events: none;
+ 			font-size: 15px;
+ 			color: white;
+ 			text-align: left;
+ 			font-weight: bold;
+    	margin-bottom: 5px;
 		}
+
 		strong {
 			color: #FD1C8E;
 		}
+
 		textarea {
-  			width: 100%;
-  			padding: 12px 20px;
-  			margin: 8px 0;
-  			box-sizing: border-box;
-  			border-radius: 4px;
-  			border-color: #33D6FF;
-  		}
-  		textarea::placeholder {
+ 			width: 100%;
+ 			padding: 12px 20px;
+ 			margin: 8px 0;
+ 			box-sizing: border-box;
+ 			border-radius: 4px;
+ 			border-color: #33D6FF;
+ 		}
+
+ 		textarea::placeholder {
 			color: darkslategray;
   			opacity: 0.9;
 
 		}
-		#descricao {
-    		resize: none;
-  		}
-  		#idLocalizacao {
-    		width: 100%;
-    		resize: none;
-    		background-color: #f9f9f9;
-    		border: 1px solid #ccc;
-    		color: #333;
-    		padding: 8px;
-    		font-family: inherit;
-    		font-size: 14px;
-    		line-height: 1.4;
-  		}
-  		.button {
-  			border: 2px solid #65659E;
-  			border-radius: 4px;
-  			background-color: #65659E;
-  			color: white;
- 			padding: 16px 32px;
+
+		.button {
+ 			border: 2px solid #65659E;
+ 			border-radius: 4px;
+ 			background-color: #65659E;
+ 			color: white;
+			padding: 16px 32px;
 			text-align: center;
 			text-decoration: none;
 			display: inline-block;
@@ -101,112 +106,236 @@
 			margin: 4px 2px;
 			cursor: pointer;
 		}
+
+  	.form-group {
+  	  display: flex;
+    	flex-direction: column;
+    	margin-bottom: 15px;
+  	}
+
+  	.form-group-inline {
+  		display: flex;
+  		align-items: center;
+  		gap: 10px;
+  		margin-bottom: 15px;
+		}
+
+		.form-group-inline label {
+  		white-space: nowrap;
+  		flex-shrink: 0;
+  		min-width: 10px; 
+		}
+
+		.form-group-inline input[type="text"] {
+  		flex: 1;
+  		padding: 8px;
+  	}
+
+  	#contador {
+    	text-align: right;
+    	font-weight: bold;
+    	display: block;
+ 	  }
+
+		#descricao {
+   		resize: none;
+ 		}
+
+ 		#idLocalizacao {
+   		width: 100%;
+   		resize: none;
+   		background-color: #f9f9f9;
+   		border: 1px solid #ccc;
+   		color: #333;
+   		padding: 8px;
+   		font-family: inherit;
+   		font-size: 14px;
+   		line-height: 1.4;
+ 		}
+
+
 	</style>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    // Contador de caracteres
-    const descricao = document.getElementById('descricao');
-    const contador = document.getElementById('contador');
-    if (descricao && contador) {
-      descricao.addEventListener('input', () => {
-        contador.textContent = `${descricao.value.length}/500`;
-      });
+window.addEventListener('DOMContentLoaded', () => {
+  // Contador de caracteres
+  const descricao = document.getElementById('descricao');
+  const contador = document.getElementById('contador');
+  if (descricao && contador) {
+    descricao.addEventListener('input', () => {
+      contador.textContent = `${descricao.value.length}/500`;
+    });
+  }
+
+  // Campos de data e hora
+  const checkbox = document.getElementById('diaUnico');
+  const labelDataInicio = document.getElementById('labelDataInicio');
+  const dataInicio = document.getElementById('dataInicio');
+  const dataFim = document.getElementById('dataFim');
+  const horaInicio = document.getElementById('horaInicio');
+  const horaFim = document.getElementById('horaFim');
+
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+  const dia = String(hoje.getDate()).padStart(2, '0');
+  const dataAtual = `${ano}-${mes}-${dia}`;
+
+  if (dataInicio) dataInicio.min = dataAtual;
+  if (dataFim) dataFim.min = dataAtual;
+
+  function atualizarLabelEDatas() {
+    if (checkbox.checked) {
+      labelDataInicio.innerHTML = 'Data do evento <strong>*</strong>';
+      dataFim.value = dataInicio.value;
+      dataFim.disabled = true;
+    } else {
+      labelDataInicio.innerHTML = 'Data de Início <strong>*</strong>';
+      dataFim.disabled = false;
     }
+  }
 
-    // Controle de datas e checkbox
-    const checkbox = document.getElementById('diaUnico');
-    const labelDataInicio = document.getElementById('labelDataInicio');
-    const dataInicio = document.getElementById('dataInicio');
-    const dataFim = document.getElementById('dataFim');
-
-    const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-    const dia = String(hoje.getDate()).padStart(2, '0');
-    const dataAtual = `${ano}-${mes}-${dia}`;
-
-    if (dataInicio) dataInicio.min = dataAtual;
-    if (dataFim) dataFim.min = dataAtual;
-
-    function atualizarLabelEDatas() {
-      if (checkbox.checked) {
-        labelDataInicio.innerHTML = 'Data do evento <strong>*</strong>';
-        dataFim.value = dataInicio.value;
-        dataFim.disabled = true;
-      } else {
-        labelDataInicio.innerHTML = 'Data de Início <strong>*</strong>';
-        dataFim.disabled = false;
-      }
+  function validarCheckboxDiaUnico() {
+    if (dataInicio.value && dataFim.value && dataInicio.value === dataFim.value) {
+      checkbox.checked = true;
+    } else {
+      checkbox.checked = false;
     }
-
-    if (dataInicio) {
-      dataInicio.addEventListener('input', () => {
-        if (checkbox.checked) {
-          dataFim.value = dataInicio.value;
-        }
-      });
-    }
-
-    if (checkbox) {
-      checkbox.addEventListener('change', atualizarLabelEDatas);
-    }
-
     atualizarLabelEDatas();
+  }
 
-    // API ViaCEP e atualização do endereço
-    const campoCep = document.getElementById('cep');
-    const campoEndereco = document.getElementById('idLocalizacao');
-    const campoNumero = document.querySelector('input[name="numero"]');
-    const campoComplemento = document.querySelector('input[name="complemento"]');
-
-    let dadosEndereco = null; // vai guardar o resultado da API
-
-    function atualizarEndereco() {
-      if (!dadosEndereco) return; // se não buscou ainda, nada a fazer
-      const numero = campoNumero?.value?.trim() || '';
-      const complemento = campoComplemento?.value?.trim() || '';
-      const complementoTexto = complemento ? `, ${complemento}` : '';
-      campoEndereco.value = `${dadosEndereco.logradouro}, ${numero}${complementoTexto}, ${dadosEndereco.bairro}, ${dadosEndereco.localidade} - ${dadosEndereco.uf}`;
+  function validarHoraFim() {
+    if (checkbox.checked && horaInicio.value && horaFim.value) {
+      if (horaFim.value <= horaInicio.value) {
+        horaFim.setCustomValidity('Horário de encerramento deve ser maior que o horário de início.');
+      } else {
+        horaFim.setCustomValidity('');
+      }
+    } else {
+      horaFim.setCustomValidity('');
     }
+  }
 
-    if (campoCep && campoEndereco) {
-      campoCep.addEventListener('blur', () => {
-        const cep = campoCep.value.replace(/\D/g, '');
-        if (cep.length === 8) {
-          fetch(`https://viacep.com.br/ws/${cep}/json/`)
-            .then(response => response.json())
-            .then(data => {
-              if (!data.erro) {
-                dadosEndereco = data;
-                atualizarEndereco();
-              } else {
-                alert('CEP não encontrado.');
-                campoEndereco.value = '';
-                dadosEndereco = null;
-              }
-            })
-            .catch(() => {
-              alert('Erro ao buscar o endereço.');
+  if (dataInicio) {
+    dataInicio.addEventListener('input', () => {
+      if (checkbox.checked) {
+        dataFim.value = dataInicio.value;
+      }
+
+      // >>> Atualiza o valor mínimo de dataFim para impedir datas anteriores a dataInicio
+      if (dataFim) dataFim.min = dataInicio.value;
+
+      validarCheckboxDiaUnico();
+
+      // Restrição de hora mínima se for hoje
+      const dataSelecionada = new Date(dataInicio.value);
+      const agora = new Date();
+
+      dataSelecionada.setHours(0, 0, 0, 0);
+      const hojeZerado = new Date();
+      hojeZerado.setHours(0, 0, 0, 0);
+
+      if (dataSelecionada.getTime() === hojeZerado.getTime()) {
+        const horaMinima = new Date(agora.getTime() + 2 * 60 * 60 * 1000); // +2h
+
+        const horas = horaMinima.getHours().toString().padStart(2, '0');
+        const minutos = horaMinima.getMinutes().toString().padStart(2, '0');
+        const horaMinimaFormatada = `${horas}:${minutos}`;
+        horaInicio.min = horaMinimaFormatada;
+
+        if (horaInicio.value && horaInicio.value < horaInicio.min) {
+          horaInicio.value = '';
+        }
+
+        horaInicio.addEventListener('input', () => {
+          if (horaInicio.value < horaInicio.min) {
+            horaInicio.setCustomValidity(`Selecione um horário após ${horaMinimaFormatada}`);
+          } else {
+            horaInicio.setCustomValidity('');
+          }
+        });
+      } else {
+        horaInicio.min = '';
+        horaInicio.setCustomValidity('');
+      }
+
+      validarHoraFim();
+    });
+  }
+
+  if (dataFim) {
+    dataFim.addEventListener('input', () => {
+      validarCheckboxDiaUnico();
+    });
+  }
+
+  if (checkbox) {
+    checkbox.addEventListener('change', atualizarLabelEDatas);
+  }
+
+  if (horaInicio) {
+    horaInicio.addEventListener('input', validarHoraFim);
+  }
+
+  if (horaFim) {
+    horaFim.addEventListener('input', validarHoraFim);
+  }
+
+  atualizarLabelEDatas();
+
+  // API ViaCEP e atualização do endereço
+  const campoCep = document.getElementById('cep');
+  const campoEndereco = document.getElementById('idLocalizacao');
+  const campoNumero = document.querySelector('input[name="numero"]');
+  const campoComplemento = document.querySelector('input[name="complemento"]');
+
+  let dadosEndereco = null;
+
+  function atualizarEndereco() {
+    if (!dadosEndereco) return;
+    const numero = campoNumero?.value?.trim() || '';
+    const complemento = campoComplemento?.value?.trim() || '';
+    const complementoTexto = complemento ? `, ${complemento}` : '';
+    campoEndereco.value = `${dadosEndereco.logradouro}, ${numero}${complementoTexto}, ${dadosEndereco.bairro}, ${dadosEndereco.localidade} - ${dadosEndereco.uf}`;
+  }
+
+  if (campoCep && campoEndereco) {
+    campoCep.addEventListener('blur', () => {
+      const cep = campoCep.value.replace(/\D/g, '');
+      if (cep.length === 8) {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+          .then(response => response.json())
+          .then(data => {
+            if (!data.erro) {
+              dadosEndereco = data;
+              atualizarEndereco();
+            } else {
+              alert('CEP não encontrado.');
               campoEndereco.value = '';
               dadosEndereco = null;
-            });
-        } else {
-          alert('CEP inválido. Digite 8 números.');
-          campoEndereco.value = '';
-          dadosEndereco = null;
-        }
-      });
-    }
+            }
+          })
+          .catch(() => {
+            alert('Erro ao buscar o endereço.');
+            campoEndereco.value = '';
+            dadosEndereco = null;
+          });
+      } else {
+        alert('CEP inválido. Digite 8 números.');
+        campoEndereco.value = '';
+        dadosEndereco = null;
+      }
+    });
+  }
 
-    // Atualiza endereço ao alterar número ou complemento
-    if (campoNumero) {
-      campoNumero.addEventListener('input', atualizarEndereco);
-    }
-    if (campoComplemento) {
-      campoComplemento.addEventListener('input', atualizarEndereco);
-    }
-  });
+  if (campoNumero) {
+    campoNumero.addEventListener('input', atualizarEndereco);
+  }
+
+  if (campoComplemento) {
+    campoComplemento.addEventListener('input', atualizarEndereco);
+  }
+});
 </script>
 
 </head>
@@ -218,15 +347,23 @@
 <p>Os campos marcados com <strong>*</strong> são obrigatórios.</p>
 
 <form action="">
-	<label for="nome">Nome <strong>*</strong></label>
+
+	<div class="form-group-inline">
+		
+		<label for="nome">Nome <strong>*</strong></label>
 		<input type="text" id="nome" placeholder="Nome do Evento"required>
-		<br><br>
 	
-	<label id="labelDataInicio" for="dataInicio">Data do evento <strong>*</strong></label>
+	</div>
+	
+	<div class="form-group-inline">
+		
+		<label id="labelDataInicio" for="dataInicio">Data do evento <strong>*</strong></label>
 		<input type="date" id="dataInicio" required>
-	<label for="diaUnico">Evento com data única? </label>
+
+		<label for="diaUnico">Evento com data única? </label>
 		<input type="checkbox" id="diaUnico">
-		<br><br>
+		
+	</div>
 
 	<label for="horaInicio">Horário de Início <strong>*</strong></label>
 		<input type="time" id="horaInicio" required>
@@ -243,7 +380,7 @@
 	
 	<label>Sobre o evento</label><br>
   		<textarea id="descricao" placeholder="Descreva os  detalhes do evento em até 500 caracteres..." maxlength="500" rows="5"></textarea>
-  		<br><span id="contador"  style="display: block; text-align: right;"><strong>0/500</strong></span>
+  		<br><strong><span id="contador">0/500</span></strong>
 
 
 	<label for="cep">CEP <strong>*</strong></label>
