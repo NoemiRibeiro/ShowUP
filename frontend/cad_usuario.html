@@ -5,16 +5,21 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Cadastro de Usuário</title>
 	<style type="text/css">
+		b {
+			color: #F6FAE3;
+		}
+
 		body {
 			font-family: Tahoma, Verdana, sans-serif;
 			background-color: #2A2A4C;
 			color: white;
 			text-align: justify;
-			text-align-last: left;
 		}
 
-		b {
-			color: #F6FAE3;
+		form {
+			max-width: 700px;
+			margin: 0 auto;
+			font-family: sans-serif;
 		}
 
 		h1 {
@@ -33,220 +38,266 @@
 		}
 
 		h4 {
-			color:#66629A;
+			color: #66629A;
 			text-shadow: 2px 2px 5px #494170;
 		}
 
 		i {
-			color: #F6FAE3;
+			color: #FD1C8E;
 		}
 
 		input {
 			padding: 12px 20px;
- 			margin: 8px 0;
- 			box-sizing: border-box;
-  			border-radius: 4px;
-  			border-color: #33D6FF;
-
-  		}
-  		input:focus {
-			padding: 12px 20px;
-  			margin: 8px 0;
-  			box-sizing: border-box;
-  			border-radius: 4px;
-  			border-color: #FD1C8E;
+			margin: 8px 0;
+			box-sizing: border-box;
+			border-radius: 4px;
+			border-color: #33D6FF;
 		}
+
+		input:focus {
+			border-color: #FD1C8E;
+		}
+
 		input::placeholder {
 			color: darkslategray;
-  			opacity: 0.9;
+			opacity: 0.9;
 		}
+
 		label {
- 			position: relative;
-  			pointer-events: none;
-  			font-size: 15px;
-  			color: white;
-  			text-align: left;
+			position: relative;
+			pointer-events: none;
+			font-size: 15px;
+			color: white;
+			text-align: left;
+			font-weight: bold;
+			margin-bottom: 5px;
 		}
-		span{
-			color: #FD1C8E;
-		}
+
 		strong {
 			color: #FD1C8E;
 		}
+
 		textarea {
-  			width: 100%;
-  			padding: 12px 20px;
-  			margin: 8px 0;
-  			box-sizing: border-box;
-  			border-radius: 4px;
-  			border-color: #33D6FF;
-  		}
-  		textarea::placeholder {
-			color: darkslategray;
-  			opacity: 0.9;
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			box-sizing: border-box;
+			border-radius: 4px;
+			border-color: #33D6FF;
 		}
 
-  		.button {
-  			border: 2px solid #65659E;
-  			border-radius: 4px;
-  			background-color: #65659E;
-  			color: white;
- 			padding: 16px 32px;
+		textarea::placeholder {
+			color: darkslategray;
+			opacity: 0.9;
+		}
+
+		.button {
+			border: 2px solid #65659E;
+			border-radius: 4px;
+			background-color: #65659E;
+			color: white;
+			padding: 16px 32px;
 			text-align: center;
 			text-decoration: none;
 			display: inline-block;
 			font-size: 16px;
 			margin: 4px 2px;
 			cursor: pointer;
+		}
+
+		.form-group {
+			display: flex;
+			flex-direction: column;
+			margin-bottom: 15px;
+		}
+
+		.form-group-inline {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-bottom: 15px;
+		}
+
+		.form-group-inline label {
+			white-space: nowrap;
+			flex-shrink: 0;
+			min-width: 10px;
+		}
+
+		.form-group-inline input[type="text"],
+		.form-group-inline input[type="password"],
+		.form-group-inline input[type="email"] {
+			flex: 1;
+			padding: 8px;
+		}
+
+		#contador {
+			text-align: right;
+			font-weight: bold;
+			display: block;
+		}
+
+		#erroSenha {
+			color: #FD1C8E;
+		}
+
+		#erroEmail {
+			color: #FD1C8E;
+		}
 	</style>
 
 	<script>
 		window.addEventListener('DOMContentLoaded', () => {
-    // Contador de caracteres
-    const descricao = document.getElementById('bio');
-    const contador = document.getElementById('contador');
-    if (descricao && contador) {
-      descricao.addEventListener('input', () => {
-        contador.textContent = `${descricao.value.length}/500`;
-      });
-    }
+			// Contador de caracteres
+			const descricao = document.getElementById('bio');
+			const contador = document.getElementById('contador');
+			if (descricao && contador) {
+				descricao.addEventListener('input', () => {
+					contador.textContent = `${descricao.value.length}/500`;
+				});
+			}
 
-  window.addEventListener('DOMContentLoaded', () => {
-    // ----- 1. Validação de Data de Nascimento -----
-    const dataInput = document.getElementById('dataNascimento');
+			// ----- 1. Validação de Data de Nascimento -----
+			const dataInput = document.getElementById('dataNascimento');
+			const hoje = new Date();
+			const limite = new Date();
+			limite.setFullYear(hoje.getFullYear() - 14);
 
-    const hoje = new Date();
-    const limite = new Date();
-    limite.setFullYear(hoje.getFullYear() - 14);
+			const ano = limite.getFullYear();
+			const mes = String(limite.getMonth() + 1).padStart(2, '0');
+			const dia = String(limite.getDate()).padStart(2, '0');
+			const dataLimite = `${ano}-${mes}-${dia}`;
 
-    const ano = limite.getFullYear();
-    const mes = String(limite.getMonth() + 1).padStart(2, '0');
-    const dia = String(limite.getDate()).padStart(2, '0');
-    const dataLimite = `${ano}-${mes}-${dia}`;
+			if (dataInput) {
+				dataInput.max = dataLimite;
+			}
 
-    if (dataInput) {
-      dataInput.max = dataLimite;
-    }
+			// ----- 2. Validação de E-mails -----
+			const email1Input = document.getElementById('email1');
+			const emailOriginal = document.getElementById('email');
+			const erroEmail = document.getElementById('erroEmail');
 
-    // ----- 2. Validação de E-mails -----
-    const email1Input = document.getElementById('email1');
-    const emailOriginal = document.getElementById('email');
-    const erroEmail = document.getElementById('erroEmail');
+			if (email1Input && emailOriginal && erroEmail) {
+				email1Input.addEventListener('blur', function () {
+					const email = emailOriginal.value.trim();
+					const email1 = email1Input.value.trim();
 
-    if (email1Input && emailOriginal && erroEmail) {
-      email1Input.addEventListener('blur', function () {
-        const email = emailOriginal.value.trim();
-        const email1 = email1Input.value.trim();
+					if (email !== email1) {
+						erroEmail.style.display = 'inline';
+					} else {
+						erroEmail.style.display = 'none';
+					}
+				});
+			}
 
-        if (email !== email1) {
-          erroEmail.style.display = 'inline';
-        } else {
-          erroEmail.style.display = 'none';
-        }
-      });
-    }
+			// ----- 3. Validação da Senha -----
+			const campoSenha = document.getElementById('senha');
+			const erro = document.getElementById('erroSenha');
 
-    // ----- 3. Validação da Senha -----
-    const campoSenha = document.getElementById('senha');
-    const erro = document.getElementById('erroSenha');
+			const itemMaiuscula = document.getElementById('maiuscula');
+			const itemMinuscula = document.getElementById('minuscula');
+			const itemNumero = document.getElementById('numero');
+			const itemEspecial = document.getElementById('especial');
+			const itemTamanho = document.getElementById('tamanho');
 
-    const itemMaiuscula = document.getElementById('maiuscula');
-    const itemMinuscula = document.getElementById('minuscula');
-    const itemNumero = document.getElementById('numero');
-    const itemEspecial = document.getElementById('especial');
-    const itemTamanho = document.getElementById('tamanho');
+			function validarSenha() {
+				const senha = campoSenha.value;
 
-    function validarSenha() {
-      const senha = campoSenha.value;
+				const temMaiuscula = /[A-Z]/.test(senha);
+				const temMinuscula = /[a-z]/.test(senha);
+				const temNumero = /[0-9]/.test(senha);
+				const temEspecial = /[^A-Za-z0-9]/.test(senha);
+				const tamanhoMinimo = senha.length >= 8;
 
-      const temMaiuscula = /[A-Z]/.test(senha);
-      const temMinuscula = /[a-z]/.test(senha);
-      const temNumero = /[0-9]/.test(senha);
-      const temEspecial = /[^A-Za-z0-9]/.test(senha);
-      const tamanhoMinimo = senha.length >= 8;
+				if (itemMaiuscula) itemMaiuscula.style.color = temMaiuscula ? '#33D6FF' : '#FD1C8E';
+				if (itemMinuscula) itemMinuscula.style.color = temMinuscula ? '#33D6FF' : '#FD1C8E';
+				if (itemNumero) itemNumero.style.color = temNumero ? '#33D6FF' : '#FD1C8E';
+				if (itemEspecial) itemEspecial.style.color = temEspecial ? '#33D6FF' : '#FD1C8E';
+				if (itemTamanho) itemTamanho.style.color = tamanhoMinimo ? '#33D6FF' : '#FD1C8E';
 
-      if (itemMaiuscula) itemMaiuscula.style.color = temMaiuscula ? '#33D6FF' : '#FD1C8E';
-      if (itemMinuscula) itemMinuscula.style.color = temMinuscula ? '#33D6FF' : '#FD1C8E';
-      if (itemNumero) itemNumero.style.color = temNumero ? '#33D6FF' : '#FD1C8E';
-      if (itemEspecial) itemEspecial.style.color = temEspecial ? '#33D6FF' : '#FD1C8E';
-      if (itemTamanho) itemTamanho.style.color = tamanhoMinimo ? '#33D6FF' : '#FD1C8E';
+				if (temMaiuscula && temMinuscula && temNumero && temEspecial && tamanhoMinimo) {
+					erro.style.display = 'none';
+				} else {
+					erro.innerText = 'A senha deve conter no mínimo 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial.';
+					erro.style.display = 'inline';
+				}
+			}
 
-      if (temMaiuscula && temMinuscula && temNumero && temEspecial && tamanhoMinimo) {
-        erro.style.display = 'none';
-      } else {
-        erro.innerText = 'A senha deve conter no mínimo 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial.';
-        erro.style.display = 'inline';
-      }
-    }
-
-    if (campoSenha) {
-      campoSenha.addEventListener('input', validarSenha);
-    }
-  });
-</script>
+			if (campoSenha) {
+				campoSenha.addEventListener('input', validarSenha);
+			}
+		});
+	</script>
 </head>
 <body>
-<h2>Cadastro de Usuário</h2>
+	<center>
+	<h2>Cadastro de Usuário</h2>
 
-<p>Preencha os campos abaixo para se cadastrar como usuário.</p>
-<p>Os campos marcados com <strong>*</strong> são obrigatórios.</p>
+	<p>Preencha os campos abaixo para se cadastrar como usuário.</p>
+	<p>Os campos marcados com <strong>*</strong> são obrigatórios.</p>
+	</center>
 
-<form action="" id="cadUsuario">
-	<label>Nome <strong>*</strong></label>
-		<input type="text" id="nome" placeholder="Nome Completo" required>
-		<br><br>
-	
-	<label>E-mail <strong>*</strong></label>
-		<input type="email" id="email" placeholder="email@provedor.com" required>
-		<br><br>
+	<form action="" id="cadUsuario">
+		<div class="form-group-inline">
+			<label>Nome <strong>*</strong></label>
+			<input type="text" id="nome" placeholder="Nome Completo" required>
+		</div>
 
-	<label>E-mail <strong>*</strong></label>
-		<input type="email" id="email1" placeholder="email@provedor.com" required><br>
-		<span id="erroEmail" style="display: none;">Os e-mails não coincidem.</span>
+		<div class="form-group-inline">
+			<label>E-mail <strong>*</strong></label>
+			<input type="email" id="email" placeholder="email@provedor.com" required>
+		</div>
+
+		<div class="form-group-inline">
+			<label>Confirme o e-mail <strong>*</strong></label>
+			<input type="email" id="email1" placeholder="email@provedor.com" required><br>
+			<span id="erroEmail" style="display: none;">Os e-mails não coincidem.</span>
+		</div>
+
+		<p><strong>A senha deve ter:</strong></p>
+		<ul>
+				<li id="maiuscula">Pelo menos uma letra maiúscula (A–Z)</li>
+				<li id="minuscula">Pelo menos uma letra minúscula (a–z)</li>
+				<li id="numero">Pelo menos um número (0–9)</li>
+				<li id="especial">Pelo menos um caractere especial (!@#$%^&*()_+{}[]...)</li>
+				<li id="tamanho">Mínimo de 8 caracteres</li>
+		</ul>
+
+		<span id="erroSenha" style="display: none;"></span><br>
+
+		<div class="form-group-inline">
+			<label>Senha <strong>*</strong></label>
+			<input type="password" id="senha" placeholder="Digite sua senha" required>
+		</div>
+
+		<div class="form-group-inline">
+			<label>Confirme a senha <strong>*</strong></label>
+			<input type="password" id="senha1" placeholder="Confirme sua senha" required>
+		</div>
+
+		<div class="form-group-inline">	
+			<label>Data de nascimento <strong>*</strong></label>
+			<input type="date" id="dataNascimento" required>
+		</div>
+
+		<div class="form-group-inline">	
+			<label>Gênero <strong>*</strong></label><br>
+			<input list="gen" id="genero" placeholder="Gênero" required>
+			<datalist id="gen">
+				<option value="Masculino">
+				<option value="Feminino">
+				<option value="Não-binário">
+				<option value="Prefiro não informar">
+			</datalist>
+		</div>
+
+		<label>Bio</label><br>
+		<textarea id="bio" placeholder="Fale um pouco sobre você..." rows="5"></textarea>
+		<br><br><strong><span id="contador" style="display: block; text-align: right;">0/500</span></strong>
 		<br>
-	
-	<p><strong>A senha deve ter:</strong></p>
-<ul>
-  <li id="maiuscula">Pelo menos uma letra maiúscula (A–Z)</li>
-  <li id="minuscula">Pelo menos uma letra minúscula (a–z)</li>
-  <li id="numero">Pelo menos um número (0–9)</li>
-  <li id="especial">Pelo menos um caractere especial (!@#$%^&*()_+{}[]...)</li>
-  <li id="tamanho">Mínimo de 8 caracteres</li>
-</ul>
 
-	<span id="erroSenha" style="display: none;"></span><br>
-
-	<label>Senha <strong>*</strong></label>
-		<input type="password" id="senha" placeholder="Digite sua senha" required>
-		<br><br>
-
-	<label>Confirme a senha <strong>*</strong></label>
-		<input type="password" id="senha1" placeholder="Confirme sua senha" required>
-		<br><br>
-	
-	<label>Data de nascimento <strong>*</strong></label>
-		<input type="date" id="dataNascimento" required>
-		<br><br>
-	
-	<label>Gênero <strong>*</strong></label><br>
-		<input list="gen" id="genero" placeholder="Gênero" required>
-  		<datalist id="gen">
-    		<option value="Masculino">
-    		<option value="Feminino">
-    		<option value="Não-binário">
-    		<option value="Prefiro não informar">
-  		</datalist>
-  		<br><br>
-
-  	<label>Bio</label><br>
-  		<textarea id="bio" placeholder="Fale um pouco sobre você..." rows="5"></textarea>
-  		<br><br><strong><span id="contador"  style="display: block; text-align: right;">0/500</span></strong>
-  		<br>
-
-  	<center><input type="submit" name="botao" value="Cadastrar Usuário" class="button"></center>
-</form>
-
-
+		<center><input type="submit" name="botao" value="Cadastrar Usuário" class="button"></center>
+	</form>
 
 </body>
 </html>
