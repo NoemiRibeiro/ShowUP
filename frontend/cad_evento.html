@@ -368,37 +368,59 @@ window.addEventListener('DOMContentLoaded', () => {
 		
 	</div>
 
-	<label for="horaInicio">Horário de Início <strong>*</strong></label>
+	<div class="form-group-inline">
+    <label for="horaInicio">Horário de Início <strong>*</strong></label>
 		<input type="time" id="horaInicio" required>
-		<br><br>
+	</div>
 
-	<label for="dataFim">Data do encerramento <strong>*</strong></label>
+	<div class="form-group-inline">
+    <label for="dataFim">Data do encerramento <strong>*</strong></label>
 		<input type="date" id="dataFim">
-		<br><br>
+	</div>
 
-	<label for="horaFim">Horário de encerramento <strong>*</strong></label>
+	<div class="form-group-inline">
+    <label for="horaFim">Horário de encerramento <strong>*</strong></label>
 		<input type="time" id="horaFim" required>
-		<br><br>
+	</div>
+
+  <div class="form-group-inline">
+    <label for="horaFim">Categoria do Evento <strong>*</strong></label>
+    <input list="tipoEve" id="tipoEvento" placeholder="Tipo de Evento" required>
+      <datalist id="tipoEve">
+        <option value="Show">
+        <option value="Feira">
+        <option value="Convenção">
+        <option value="Peça Teatral">
+        <option value="StandUp">
+
+      </datalist>
+  </div>
 
 	
-	<label>Sobre o evento</label><br>
-  		<textarea id="descricao" placeholder="Descreva os  detalhes do evento em até 500 caracteres..." maxlength="500" rows="5"></textarea>
+	 <label>Sobre o evento</label><br>
+  	<textarea id="descricao" placeholder="Descreva os  detalhes do evento em até 500 caracteres..." maxlength="500" rows="5"></textarea>
   		<br><strong><span id="contador">0/500</span></strong>
 
 
-	<label for="cep">CEP <strong>*</strong></label>
-		<input type="text" id="cep" placeholder="Digite o CEP" maxlength="9">
+	  <div class="form-group-inline">
+      <label for="cep">CEP <strong>*</strong></label>
+		  <input type="text" id="cep" placeholder="Digite o CEP" maxlength="9">
+    </div>
 
-	<label for="numero">Número <strong>*</strong></label>
-		<input type="text" name="numero" placeholder="Digite o número ou 's/n'">
+	  <div class="form-group-inline">
+      <label for="numero">Número <strong>*</strong></label>
+		  <input type="text" name="numero" placeholder="Digite o número ou 's/n'">
+    </div>
 
-	<label for="complemento">Complemento</label>
-		<input type="text" name="complemento" placeholder="Digite o complemento">
-		<br><br>
+	  <div class="form-group-inline">
+      <label for="complemento">Complemento</label>
+		  <input type="text" name="complemento" placeholder="Digite o complemento">
+		</div>
 
-	<label for="idLocalizacao">Endereço do evento (preenchido automaticamente) <strong>*</strong></label><br>
-		<textarea id="idLocalizacao" placeholder="Endereço será preenchido automaticamente" rows="2" readonly></textarea>
-		<br><br>
+	 <div class="form-group-inline">
+      <label for="idLocalizacao">Endereço do evento (preenchido automaticamente) </label><br>
+		  <textarea id="idLocalizacao" placeholder="Endereço será preenchido automaticamente" rows="2" readonly></textarea>
+		</div>
 
   	<center><input type="submit" name="botao" value="Cadastrar Evento" class="button"></center>
 </form>

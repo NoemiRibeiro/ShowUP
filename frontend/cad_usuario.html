@@ -146,88 +146,112 @@
 		}
 	</style>
 
-	<script>
-		window.addEventListener('DOMContentLoaded', () => {
-			// Contador de caracteres
-			const descricao = document.getElementById('bio');
-			const contador = document.getElementById('contador');
-			if (descricao && contador) {
-				descricao.addEventListener('input', () => {
-					contador.textContent = `${descricao.value.length}/500`;
-				});
-			}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // ----- 1. Contador de caracteres da bio -----
+  const descricao = document.getElementById('bio');
+  const contador = document.getElementById('contador');
+  if (descricao && contador) {
+    descricao.addEventListener('input', () => {
+      contador.textContent = `${descricao.value.length}/500`;
+    });
+  }
 
-			// ----- 1. Validação de Data de Nascimento -----
-			const dataInput = document.getElementById('dataNascimento');
-			const hoje = new Date();
-			const limite = new Date();
-			limite.setFullYear(hoje.getFullYear() - 14);
+  // ----- 2. Validação de Data de Nascimento -----
+  const dataInput = document.getElementById('dataNascimento');
+  const hoje = new Date();
+  const limite = new Date();
+  limite.setFullYear(hoje.getFullYear() - 14);
 
-			const ano = limite.getFullYear();
-			const mes = String(limite.getMonth() + 1).padStart(2, '0');
-			const dia = String(limite.getDate()).padStart(2, '0');
-			const dataLimite = `${ano}-${mes}-${dia}`;
+  const ano = limite.getFullYear();
+  const mes = String(limite.getMonth() + 1).padStart(2, '0');
+  const dia = String(limite.getDate()).padStart(2, '0');
+  const dataLimite = `${ano}-${mes}-${dia}`;
 
-			if (dataInput) {
-				dataInput.max = dataLimite;
-			}
+  if (dataInput) {
+    dataInput.max = dataLimite;
+  }
 
-			// ----- 2. Validação de E-mails -----
-			const email1Input = document.getElementById('email1');
-			const emailOriginal = document.getElementById('email');
-			const erroEmail = document.getElementById('erroEmail');
+  // ----- 3. Validação de E-mail (formato + confirmação) -----
+  const email = document.getElementById('email');
+  const email1 = document.getElementById('email1');
+  const erroEmail = document.getElementById('erroEmail');
 
-			if (email1Input && emailOriginal && erroEmail) {
-				email1Input.addEventListener('blur', function () {
-					const email = emailOriginal.value.trim();
-					const email1 = email1Input.value.trim();
+  function validarFormatoEmail(emailStr) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    return regex.test(emailStr);
+  }
 
-					if (email !== email1) {
-						erroEmail.style.display = 'inline';
-					} else {
-						erroEmail.style.display = 'none';
-					}
-				});
-			}
+  function validarEmail() {
+    const valorEmail = email.value.trim();
+    const valorEmail1 = email1.value.trim();
 
-			// ----- 3. Validação da Senha -----
-			const campoSenha = document.getElementById('senha');
-			const erro = document.getElementById('erroSenha');
+    if (!validarFormatoEmail(valorEmail)) {
+      erroEmail.textContent = 'Formato de e-mail inválido.';
+      erroEmail.style.display = 'inline';
+      email.setCustomValidity("Formato de e-mail inválido.");
+      return;
+    } else {
+      email.setCustomValidity("");
+    }
 
-			const itemMaiuscula = document.getElementById('maiuscula');
-			const itemMinuscula = document.getElementById('minuscula');
-			const itemNumero = document.getElementById('numero');
-			const itemEspecial = document.getElementById('especial');
-			const itemTamanho = document.getElementById('tamanho');
+    if (valorEmail !== valorEmail1) {
+      erroEmail.textContent = 'Os e-mails não coincidem.';
+      erroEmail.style.display = 'inline';
+      email1.setCustomValidity("Os e-mails não coincidem.");
+    } else {
+      erroEmail.style.display = 'none';
+      email1.setCustomValidity("");
+    }
+  }
 
-			function validarSenha() {
-				const senha = campoSenha.value;
+  if (email && email1 && erroEmail) {
+    email.addEventListener('input', validarEmail);
+    email1.addEventListener('input', validarEmail);
+    email1.addEventListener('blur', validarEmail);
+  }
 
-				const temMaiuscula = /[A-Z]/.test(senha);
-				const temMinuscula = /[a-z]/.test(senha);
-				const temNumero = /[0-9]/.test(senha);
-				const temEspecial = /[^A-Za-z0-9]/.test(senha);
-				const tamanhoMinimo = senha.length >= 8;
+  // ----- 4. Validação da Senha -----
+  const campoSenha = document.getElementById('senha');
+  const erro = document.getElementById('erroSenha');
 
-				if (itemMaiuscula) itemMaiuscula.style.color = temMaiuscula ? '#33D6FF' : '#FD1C8E';
-				if (itemMinuscula) itemMinuscula.style.color = temMinuscula ? '#33D6FF' : '#FD1C8E';
-				if (itemNumero) itemNumero.style.color = temNumero ? '#33D6FF' : '#FD1C8E';
-				if (itemEspecial) itemEspecial.style.color = temEspecial ? '#33D6FF' : '#FD1C8E';
-				if (itemTamanho) itemTamanho.style.color = tamanhoMinimo ? '#33D6FF' : '#FD1C8E';
+  const itemMaiuscula = document.getElementById('maiuscula');
+  const itemMinuscula = document.getElementById('minuscula');
+  const itemNumero = document.getElementById('numero');
+  const itemEspecial = document.getElementById('especial');
+  const itemTamanho = document.getElementById('tamanho');
 
-				if (temMaiuscula && temMinuscula && temNumero && temEspecial && tamanhoMinimo) {
-					erro.style.display = 'none';
-				} else {
-					erro.innerText = 'A senha deve conter no mínimo 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial.';
-					erro.style.display = 'inline';
-				}
-			}
+  function validarSenha() {
+    const senha = campoSenha.value;
 
-			if (campoSenha) {
-				campoSenha.addEventListener('input', validarSenha);
-			}
-		});
-	</script>
+    const temMaiuscula = /[A-Z]/.test(senha);
+    const temMinuscula = /[a-z]/.test(senha);
+    const temNumero = /[0-9]/.test(senha);
+    const temEspecial = /[^A-Za-z0-9]/.test(senha);
+    const tamanhoMinimo = senha.length >= 8;
+
+    if (itemMaiuscula) itemMaiuscula.style.color = temMaiuscula ? '#33D6FF' : '#FD1C8E';
+    if (itemMinuscula) itemMinuscula.style.color = temMinuscula ? '#33D6FF' : '#FD1C8E';
+    if (itemNumero) itemNumero.style.color = temNumero ? '#33D6FF' : '#FD1C8E';
+    if (itemEspecial) itemEspecial.style.color = temEspecial ? '#33D6FF' : '#FD1C8E';
+    if (itemTamanho) itemTamanho.style.color = tamanhoMinimo ? '#33D6FF' : '#FD1C8E';
+
+    if (temMaiuscula && temMinuscula && temNumero && temEspecial && tamanhoMinimo) {
+      erro.style.display = 'none';
+      campoSenha.setCustomValidity("");
+    } else {
+      erro.innerText = 'A senha deve conter no mínimo 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial.';
+      erro.style.display = 'inline';
+      campoSenha.setCustomValidity("Senha fraca.");
+    }
+  }
+
+  if (campoSenha) {
+    campoSenha.addEventListener('input', validarSenha);
+  }
+});
+</script>
+
 </head>
 <body>
 	<center>

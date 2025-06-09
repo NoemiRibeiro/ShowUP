@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados da Pesquisa de Eventos</title>
+  <style type="text/css">
+    body {
+      font-family: Tahoma, Verdana, sans-serif;
+      background-color: #2A2A4C;
+      color: white;
+      text-align: justify;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      color: #333;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #FD1C8E;
+      text-shadow: 2px 2px 5px #494170;
+    }
+
+
+    .event-details {
+      margin-top: 20px;
+    }
+
+    .event-detail {
+      margin-bottom: 20px;
+    }
+
+    .event-detail strong {
+      color: #FD1C8E;
+    }
+
+    .event-detail span {
+      font-weight: bold;
+      color: #33D6FF;
+    }
+
+    .event-info {
+      margin-top: 10px;
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .event-info p {
+      margin: 0;
+      padding: 0;
+    }
+
+    .button {
+      background-color: #65659E;
+      color: white;
+      padding: 16px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 10px 0;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 70%;
+    }
+
+    .button:hover {
+      background-color: #494170;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Resultados da Pesquisa de Evento</h1>
+
+    <div class="event-details">
+      <div class="event-detail">
+        <strong>Data do Evento:</strong>
+        <span id="dataEvento"></span>
+      </div>
+
+      <div class="event-detail">
+        <strong>Horário de Início:</strong>
+        <span id="horaInicioEvento"></span>
+      </div>
+
+      <div class="event-detail">
+        <strong>Data de Encerramento:</strong>
+        <span id="dataFimEvento"></span>
+      </div>
+
+      <div class="event-detail">
+        <strong>Horário de Encerramento:</strong>
+        <span id="horaFimEvento"></span>
+      </div>
+
+      <div class="event-detail">
+        <strong>Sobre o Evento:</strong>
+        <p id="descricaoEvento"></p>
+      </div>
+
+      <div class="event-detail">
+        <strong>Endereço do Evento:</strong>
+        <p id="enderecoEvento"></p>
+      </div>
+    </div>
+
+    <center><a href="pesquisa_evento.html" class="button">Voltar à Pesquisa</a></center>
+  </div>
+
+  <script>
+    // Simulando a captura dos dados da pesquisa
+    const evento = {
+      dataInicio: "2025-06-15",
+      horaInicio: "14:00",
+      dataFim: "2025-06-15",
+      horaFim: "18:00",
+      descricao: "Evento sobre novas tecnologias. Venha aprender sobre as inovações do mercado!",
+      endereco: "Rua Exemplo, 123 - Bairro X, Cidade Y"
+    };
+
+    // Preenchendo os dados no HTML
+    document.getElementById('dataEvento').textContent = evento.dataInicio;
+    document.getElementById('horaInicioEvento').textContent = evento.horaInicio;
+    document.getElementById('dataFimEvento').textContent = evento.dataFim;
+    document.getElementById('horaFimEvento').textContent = evento.horaFim;
+    document.getElementById('descricaoEvento').textContent = evento.descricao;
+    document.getElementById('enderecoEvento').textContent = evento.endereco;
+  </script>
+
+</body>
+</html>
