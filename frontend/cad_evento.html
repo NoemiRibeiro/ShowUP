@@ -126,7 +126,7 @@
   		min-width: 10px; 
 		}
 
-		.form-group-inline input[type="text"] {
+		.form-group-inline input {
   		flex: 1;
   		padding: 8px;
   	}
@@ -152,7 +152,6 @@
    		font-size: 14px;
    		line-height: 1.4;
  		}
-
 
 	</style>
 
@@ -340,11 +339,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </head>
 <body>
-
+<center>
 <h2>Cadastro de Evento</h2>
 
 <p>Preencha os campos abaixo para cadastrar um evento.</p>
 <p>Os campos marcados com <strong>*</strong> são obrigatórios.</p>
+</center>
 
 <form action="">
 
@@ -359,6 +359,9 @@ window.addEventListener('DOMContentLoaded', () => {
 		
 		<label id="labelDataInicio" for="dataInicio">Data do evento <strong>*</strong></label>
 		<input type="date" id="dataInicio" required>
+  </div>
+
+  <div class="form-group-inline">
 
 		<label for="diaUnico">Evento com data única? </label>
 		<input type="checkbox" id="diaUnico">
@@ -396,11 +399,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	<label for="idLocalizacao">Endereço do evento (preenchido automaticamente) <strong>*</strong></label><br>
 		<textarea id="idLocalizacao" placeholder="Endereço será preenchido automaticamente" rows="2" readonly></textarea>
 		<br><br>
-	
-
-	
-
-	
 
   	<center><input type="submit" name="botao" value="Cadastrar Evento" class="button"></center>
 </form>
